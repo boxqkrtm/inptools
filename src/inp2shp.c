@@ -37,7 +37,7 @@ char *SectTxtI[] = { "[COORDINATES]", "[VERTICES]", "[END]",
 /**
  * INP file resource pointer. 
  */
-FILE *InFile;
+FILE *InFile2;
 
 /**
  * Junction shapefile handle.
@@ -73,7 +73,7 @@ DBFHandle hPumpDBF = NULL;
 /**
  * Tokens in INP file 
  */
-char *Tok[MAXTOKS];
+char *Tok2[MAXTOKS];
 
 /**
  * Number of junctions in the generated shapefile.
@@ -208,15 +208,15 @@ int main(int argc, char **argv)
 	create_reservoir_shapefile(reservoirs_name);
 	create_tank_shapefile(tanks_name);
 	create_valve_shapefile(valves_name);
-	InFile = fopen(argv[1], "rt");
+	InFile2 = fopen(argv[1], "rt");
 
-	while (fgets(line, MAXLINE, InFile) != NULL) {
+	while (fgets(line, MAXLINE, InFile2) != NULL) {
 		strcpy(wline, line);
 		Ntokens = en_gettokens(wline);
 		/* Skip blank lines and comments */
 		if (Ntokens == 0)
 			continue;
-		if (*Tok[0] == ';')
+		if (*Tok2[0] == ';')
 			continue;
 
 		/* Check if max. length exceeded */
@@ -224,7 +224,7 @@ int main(int argc, char **argv)
 			printf("WARNING: Line too long.\n");
 		}
 		/* Check if line begins with a new section heading */
-		if (*Tok[0] == '[') {
+		if (*Tok2[0] == '[') {
 			/* [VERTICES] */
 			if ((sect == 1) && (num_vertices > 0))
 				write_pipe_shape();
@@ -232,7 +232,7 @@ int main(int argc, char **argv)
 			if (sect == 0)
 				handle_virtual_line_nodes();
 			sect = (-1);
-			newsect = en_findmatch(Tok[0], SectTxtI);
+			newsect = en_findmatch(Tok2[0], SectTxtI);
 			if (newsect >= 0) {
 				sect = newsect;
 				if (sect == 2)
@@ -288,7 +288,7 @@ void initialize()
 		node_y[i] = 0;
 	}
 	for (i = 0; i < MAXTOKS; i++) {
-		Tok[i] = NULL;
+		Tok2[i] = NULL;
 	}
 }
 
@@ -767,7 +767,7 @@ int write_pump(int index)
 		break;
 	}
 
-	error = ENgetlinkvalue(index, EN_LINKPATTERN, &pattern);
+	error = ENgetlinkvalue(index, EN_PATTERN, &pattern);
 	if (0 != error) {
 		fprintf(stderr,
 			"FATAL ERROR: ENgetlinkvalue(%d, EN_LINKPATTERN returned error %d in write_pump().\n",
