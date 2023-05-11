@@ -163,6 +163,24 @@ int main(int argc, char **argv)
 	initialize();
 
 	/* parameter check */
+	if(argc == 2){
+		int nameLength = strlen(argv[1])-4;
+		char *name = strcat(strncpy(name, argv[1], nameLength), "\0");
+		char *names[] = {
+			"", ".inp","_report.shp", "_junction.shp", "_pipe.shp","_pump.shp", "_reservoir.shp","_tank.shp","_valve.shp"
+		};
+		for(int i = 0; i < argc; i++){
+			free(argv[i]);
+		}
+		free(argv);
+		argv = (char**)malloc(9 * sizeof(char*);
+		for(int i = 0; i < 9; i++){
+			argv[i] = (char*)malloc(nameLength+20 * sizeof(char);
+			argv[i] = strcpy(argv[i], name);
+			argv[i] = strcat(argv[i], names[i]);
+		}
+		argc = 9;
+	}
 	if ((argc != 9) ||
 	    ((!str_is_shp(argv[3]) || (!str_is_shp(argv[4]) ||
 				       (!str_is_shp(argv[5])
