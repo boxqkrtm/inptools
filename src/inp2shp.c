@@ -173,9 +173,9 @@ int main(int argc, char **argv)
 			free(argv[i]);
 		}
 		free(argv);
-		argv = (char**)malloc(9 * sizeof(char*);
+		argv = (char**)malloc(9 * sizeof(char*));
 		for(int i = 0; i < 9; i++){
-			argv[i] = (char*)malloc(nameLength+20 * sizeof(char);
+			argv[i] = (char*)malloc(nameLength+20 * sizeof(char));
 			argv[i] = strcpy(argv[i], name);
 			argv[i] = strcat(argv[i], names[i]);
 		}
