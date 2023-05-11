@@ -5000,7 +5000,7 @@ else
   as_fn_error $? "unable to find function DBFOpen(). Please install libshp" "$LINENO" 5
 fi
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for pj_init -lproj" >&5
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for pj_init in -lproj" >&5
 $as_echo_n "checking for pj_init in -lproj... " >&6; }
 if ${ac_cv_lib_proj_pj_init+:} false; then :
   $as_echo_n "(cached) " >&6
@@ -5016,9 +5016,12 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 #ifdef __cplusplus
 extern "C"
 #endif
-#include <proj.h>
+char pj_init ();
+int
 main ()
 {
+return pj_init ();
+  ;
   return 0;
 }
 _ACEOF
