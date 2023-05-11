@@ -281,7 +281,7 @@ void initialize()
   /**
    * \todo This can be optimized
    */
-	for (i = 0; i < 500000; i++) {
+	for (i = 0; i < 5000; i++) {
 		vertex_x[i] = 0;
 		vertex_y[i] = 0;
 		node_x[i] = 0;

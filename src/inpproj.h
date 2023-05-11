@@ -23,6 +23,6 @@
 #define   MAXTOKS   40		/* Max. items per line of input */
 #define UCHAR(x) (((x) >= 'a' && (x) <= 'z') ? ((x)&~32) : (x))
 /* #define DEBUG 1 */
-#define MAXNUMNODES 500000
+#define MAXNUMNODES 5000
 
 void exit_inpproj(int error);
