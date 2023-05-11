@@ -742,7 +742,7 @@ int write_pump(int index)
 			index, error);
 		exit_inp2shp(1);
 	}
-	strcpy(Tol2[0], "");
+	strcpy(Tok2[0], "");
 	switch (type) {
 	case EN_CONST_HP:
 		error = ENgetlinkvalue(index, EN_MINORLOSS, &power);
@@ -752,7 +752,7 @@ int write_pump(int index)
 				index, error);
 			exit_inp2shp(1);
 		}
-		sprintf(Tol2[0], "POWER %f SPEED %f", power, d);
+		sprintf(Tok2[0], "POWER %f SPEED %f", power, d);
 		break;
 	case EN_POWER_FUNC:
 	case EN_CUSTOM:
@@ -763,7 +763,7 @@ int write_pump(int index)
 				index, error);
 			exit_inp2shp(1);
 		}
-		sprintf(Tol2[0], "HEAD %s SPEED %f", string, d);
+		sprintf(Tok2[0], "HEAD %s SPEED %f", string, d);
 		break;
 	}
 
@@ -782,10 +782,10 @@ int write_pump(int index)
 				(int) pattern, error);
 			exit_inp2shp(1);
 		}
-		sprintf(Tol2[strlen(Tol2[0])], " PATTERN %s", string);
+		sprintf(Tok2[strlen(Tok2[0])], " PATTERN %s", string);
 	}
 
-	DBFWriteStringAttribute(hPumpDBF, num_pumps, 11, Tol2[0]);
+	DBFWriteStringAttribute(hPumpDBF, num_pumps, 11, Tok2[0]);
 
 	num_pumps++;
 
@@ -882,8 +882,8 @@ int write_valve(int index)
 			index, error);
 		exit_inp2shp(1);
 	}
-	sprintf(Tol2[0], "%f", d);
-	DBFWriteStringAttribute(hValveDBF, num_valves, 13, Tol2[0]);
+	sprintf(Tok2[0], "%f", d);
+	DBFWriteStringAttribute(hValveDBF, num_valves, 13, Tok2[0]);
 	error = ENgetlinkvalue(index, EN_MINORLOSS, &d);
 	if (0 != error) {
 		fprintf(stderr,
@@ -914,11 +914,11 @@ int write_node()
 	int tonode;
 	int error;
 
-	error = ENgetnodeindex(Tol2[0], &index);
+	error = ENgetnodeindex(Tok2[0], &index);
 	if (0 != error) {
 		fprintf(stderr,
 			"FATAL ERROR: ENgetnodeindex(%s) returned error %d in write_node().\n",
-			Tol2[0], error);
+			Tok2[0], error);
 		exit_inp2shp(1);
 	}
 #ifdef DEBUG
@@ -929,13 +929,13 @@ int write_node()
 	if (0 != error) {
 		fprintf(stderr,
 			"FATAL ERROR: ENgetlinkcount(%s) returned error %d in write_node().\n",
-			Tol2[0], error);
+			Tok2[0], error);
 		exit_inp2shp(1);
 	}
 	if (0 == index) {
 		fprintf(stderr,
 			"ERROR: Node \"%s\" referenced in [COORDINATES] was not found.\n",
-			Tol2[0]);
+			Tok2[0]);
 		return 0;
 	}
 	if (index >= MAXNUMNODES) {
@@ -944,8 +944,8 @@ int write_node()
 			MAXNUMNODES);
 		exit_inp2shp(1);
 	}
-	node_x[index] = atof(Tol2[1]);
-	node_y[index] = atof(Tol2[2]);
+	node_x[index] = atof(Tok2[1]);
+	node_y[index] = atof(Tok2[2]);
 
 
 
@@ -987,17 +987,17 @@ int write_vertex()
 	int index;
 	int error;
 
-	if (strcmp(vertex_line_name, Tol2[0]) != 0) {
-		error = ENgetlinkindex(Tol2[0], &index);
+	if (strcmp(vertex_line_name, Tok2[0]) != 0) {
+		error = ENgetlinkindex(Tok2[0], &index);
 		if (0 != error) {
 			fprintf(stderr,
 				"FATAL ERROR: ENgetlinkindex(%s) returned error %d in write_vertex().\n",
-				Tol2[0], error);
+				Tok2[0], error);
 			exit_inp2shp(1);
 		}
 		if (index == 0) {
 			printf("[COORDINATES]: link '%s' was not found\n",
-			       Tol2[0]);
+			       Tok2[0]);
 			return 0;
 		}
 		if (strcmp(vertex_line_name, "") != 0) {
@@ -1018,7 +1018,7 @@ int write_vertex()
 		}
 		num_vertices = 1;
 		vertex_line_index = index;
-		strcpy(vertex_line_name, Tol2[0]);
+		strcpy(vertex_line_name, Tok2[0]);
 	} else {
 		num_vertices++;
 	}
@@ -1028,8 +1028,8 @@ int write_vertex()
 			MAXNUMNODES);
 		exit_inp2shp(1);
 	}
-	vertex_x[num_vertices] = atof(Tol2[1]);
-	vertex_y[num_vertices] = atof(Tol2[2]);
+	vertex_x[num_vertices] = atof(Tok2[1]);
+	vertex_y[num_vertices] = atof(Tok2[2]);
 
 	return 0;
 }
@@ -1048,8 +1048,8 @@ int write_junction(int index)
 	int returnvalue;
 	int error;
 
-	x = atof(Tol2[1]);
-	y = atof(Tol2[2]);
+	x = atof(Tok2[1]);
+	y = atof(Tok2[2]);
 
 	error = ENgetnodeid(index, string);
 	if (0 != error) {
@@ -1150,8 +1150,8 @@ int write_tank(int index)
 	float f;
 	int error;
 
-	x = atof(Tol2[1]);
-	y = atof(Tol2[2]);
+	x = atof(Tok2[1]);
+	y = atof(Tok2[2]);
 	error = ENgetnodeid(index, string);
 	if (0 != error) {
 		fprintf(stderr,
@@ -1231,8 +1231,8 @@ int write_reservoir(int index)
 	int error;
 	float f;
 
-	x = atof(Tol2[1]);
-	y = atof(Tol2[2]);
+	x = atof(Tok2[1]);
+	y = atof(Tok2[2]);
 
 	error = ENgetnodeid(index, string);
 	if (0 != error) {
@@ -1334,14 +1334,14 @@ int write_null_pipe()
 #ifdef DEBUG
 	fprintf(stderr, "write_null_pipe()\n");
 #endif
-	error = ENgetlinkindex(Tol2[0], &index);
+	error = ENgetlinkindex(Tok2[0], &index);
 	if (0 != error) {
 		fprintf(stderr,
 			"FATAL ERROR: ENgetlinkindex(%s) returned error %d in write_null_pipe().\n",
-			Tol2[0], error);
+			Tok2[0], error);
 		exit_inp2shp(1);
 	}
-	DBFWriteStringAttribute(hPipeDBF, num_pipes, 0, Tol2[0]);
+	DBFWriteStringAttribute(hPipeDBF, num_pipes, 0, Tok2[0]);
 	error = ENgetlinkvalue(index, EN_DIAMETER, &d);
 	if (0 != error) {
 		fprintf(stderr,
@@ -1852,7 +1852,7 @@ int en_gettokens(char *s)
 **  Input:   *s = string to be tokenized
 **  Output:  returns number of tokens in s
 **  Purpose: scans string for tokens, saving pointers to them
-**           in module global variable Tol2[]
+**           in module global variable Tok2[]
 **
 ** Tokens can be separated by the characters listed in SEPSTR
 ** (spaces, tabs, newline, carriage return) which is defined
@@ -1865,7 +1865,7 @@ int en_gettokens(char *s)
 
 /* Begin with no tokens */
 	for (n = 0; n < MAXTOKS; n++)
-		Tol2[n] = NULL;
+		Tok2[n] = NULL;
 	n = 0;
 
 /* Truncate s at start of comment */
@@ -1886,7 +1886,7 @@ int en_gettokens(char *s)
 				m = strcspn(s, "\"\n\r");	/* Find end quote (or EOL) */
 			}
 			s[m] = '\0';	/* Null-terminate the token */
-			Tol2[n] = s;	/* Save pointer to token */
+			Tok2[n] = s;	/* Save pointer to token */
 			n++;	/* Update token count */
 			s += m + 1;	/* Begin next token */
 		}
