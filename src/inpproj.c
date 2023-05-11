@@ -56,6 +56,7 @@ char *Tok[MAXTOKS];
  */
 int main(int argc, char **argv)
 {
+	PJ_CONTEXT *ctx = proj_context_create();
 	char line[MAXLINE];
 	char wline[MAXLINE];
 	int Ntokens;
@@ -69,18 +70,18 @@ int main(int argc, char **argv)
 	    { "+proj=longlat", "+ellps=WGS84", "+datum=WGS84",
 		"+no_defs"
 	};
-	projPJ pj_gk;
-	projPJ pj_wgs84;
+	PJ* pj_gk;
+	PJ* pj_wgs84;
 	double x;
 	double y;
 	double z;
 
-	if (!(pj_gk = pj_init(10, args_gk))) {
+	if (!(pj_gk = proj_create(10, args_gk))) {
 		printf("failed to init GK projection\n");
 		exit(1);
 	}
 
-	if (!(pj_wgs84 = pj_init(14, args_wgs84))) {
+	if (!(pj_wgs84 = proj_create(14, args_wgs84))) {
 		printf("failed to init WGS84 projection\n");
 		exit(1);
 	}
@@ -145,10 +146,16 @@ int main(int argc, char **argv)
 				x = strtod(Tok[1], NULL);
 				y = strtod(Tok[2], NULL);
 				z = 0.0;
-				pj_transform(pj_gk, pj_wgs84, 1, 0, &x, &y,
-					     &z);
+				PJ_COORD coord;
+				coord.v[0] = x;
+				coord.v[1] = y;
+				coord.v[2] = z;
+				coord.v[3] = 0.0;
+				PJ* pj = proj_create_crs_to_crs(ctx, pj_gk, pj_wgs84,0);
+				PJ_DIRECTION direction = PJ_FWD;
+				PJ_COORD result = proj_trans(pj, direction ,coord);
 				fprintf(OutFile, " %s\t%f\t%f\n", Tok[0],
-					x / DEG_TO_RAD, y / DEG_TO_RAD);
+					result.v[0], result.v[1]);
 			}
 			break;
 		default:
