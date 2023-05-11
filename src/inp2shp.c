@@ -164,20 +164,20 @@ int main(int argc, char **argv)
 
 	/* parameter check */
 	if(argc == 2){
-		int nameLength = strlen(argv[1])-4;
-		char *name = strcat(strncpy(name, argv[1], nameLength), "\0");
+		int nameLength = strlen(argv[1])-4+1;
+		char *name = (char*)malloc(sizeof(char) * nameLength);
+		name = strncpy(name, argv[1], nameLength);
+		name[nameLength-1] = '\0';
+		printf("%s\n", name);
 		char *names[] = {
 			"", ".inp","_report.shp", "_junction.shp", "_pipe.shp","_pump.shp", "_reservoir.shp","_tank.shp","_valve.shp"
 		};
-		for(int i = 0; i < argc; i++){
-			free(argv[i]);
-		}
-		free(argv);
 		argv = (char**)malloc(9 * sizeof(char*));
 		for(int i = 0; i < 9; i++){
-			argv[i] = (char*)malloc(nameLength+20 * sizeof(char));
+			argv[i] = (char*)malloc(nameLength+(strlen(names[i])+1) * sizeof(char));
 			argv[i] = strcpy(argv[i], name);
 			argv[i] = strcat(argv[i], names[i]);
+			argv[i] = strcat(argv[i], "\0");
 		}
 		argc = 9;
 	}
