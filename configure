@@ -5016,12 +5016,9 @@ cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 #ifdef __cplusplus
 extern "C"
 #endif
-char pj_init ();
 int
 main ()
 {
-return pj_init ();
-  ;
   return 0;
 }
 _ACEOF
@@ -5334,9 +5331,9 @@ fi
 
 done
 
-for ac_header in proj_api.h
+for ac_header in proj.h
 do :
-  ac_fn_c_check_header_mongrel "$LINENO" "proj_api.h" "ac_cv_header_proj_api_h" "$ac_includes_default"
+  ac_fn_c_check_header_mongrel "$LINENO" "proj.h" "ac_cv_header_proj_api_h" "$ac_includes_default"
 if test "x$ac_cv_header_proj_api_h" = xyes; then :
   cat >>confdefs.h <<_ACEOF
 #define HAVE_PROJ_API_H 1

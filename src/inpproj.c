@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "inpproj.h"
-#include <proj_api.h>
+#include <proj.h>
 
 /**
  * These sections have to be projected. 
